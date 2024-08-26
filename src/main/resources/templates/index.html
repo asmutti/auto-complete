@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Programming Languages AutoComplete</title>
+</head>
+<body>
+<h1>AutoComplete Example</h1>
+<input type="text" id="autocomplete-input" oninput="performAutocomplete()" list="suggestions">
+<datalist id="suggestions"></datalist>
+<script th:inline="javascript">
+    function performAutocomplete() {
+        const query = document.getElementById('autocomplete-input').value;
+        fetch(`/autocomplete?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const suggestions = document.getElementById('suggestions');
+                suggestions.innerHTML = '';
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    suggestions.appendChild(option);
+                });
+            });
+    }
+</script>
+</body>
+</html>
